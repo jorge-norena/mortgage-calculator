@@ -9,7 +9,7 @@ import Modal from "@/components/Modal";
 import DecisionBadge from "@/components/Badge";
 import HistoryList from "@/components/HistoryList";
 import { BorrowerInput, EvaluationResult, EvaluateResponse } from "@/lib/types";
-import { loadHistory, saveToHistory } from "@/lib/storage";
+import { loadHistory, saveToHistory, clearHistory } from "@/lib/storage";
 
 export default function HomePage() {
   const [result, setResult] = useState<EvaluationResult | null>(null);
@@ -19,6 +19,7 @@ export default function HomePage() {
   const [history, setHistory] = useState<EvaluationResult[]>([]);
 
   useEffect(() => {
+    // Load history once on mount from localStorage
     setHistory(loadHistory());
     console.log("Loaded history", loadHistory());
   }, []);
@@ -41,13 +42,24 @@ export default function HomePage() {
         setResult(r);
         setOpen(true);
         saveToHistory(r);
-        setHistory((prev) => [r, ...prev]); // reflejar en UI
+        setHistory((prev) => [r, ...prev]); // Update en UI
       }
     } catch {
       setErrorMsg("Network or server error");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleClearHistory = () => {
+    // Confirm before clearing Basic.
+    if (!history.length) return;
+    const ok = window.confirm('Clear all saved evaluations?');
+    if (!ok) return;
+    clearHistory();
+    setHistory([]);
+    // Close the modal just in case
+    setOpen(false);
   };
 
   return (
@@ -74,6 +86,7 @@ export default function HomePage() {
                 setResult(r);
                 setOpen(true);
               }}
+              onClear={handleClearHistory}
             />
           </div>
         </div>
@@ -117,7 +130,6 @@ export default function HomePage() {
           </div>
         )}
       </Modal>
-      {/* <Credits /> */}
     </main>
   );
 }
