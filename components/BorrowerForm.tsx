@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { BorrowerInput } from '@/lib/types';
+import { useState } from "react";
+import { BorrowerInput } from "@/lib/types";
 
 interface BorrowerFormProps {
   onSubmit: (data: BorrowerInput) => void;
@@ -14,16 +14,16 @@ export default function BorrowerForm({ onSubmit }: BorrowerFormProps) {
     loanAmount: 0,
     propertyValue: 0,
     fico: 680,
-    occupancy: 'Residencial',
+    occupancy: "Residencial",
   });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: name === 'occupancy' ? value : Number(value),
+      [name]: name === "occupancy" ? value : Number(value),
     }));
   };
 
@@ -33,7 +33,10 @@ export default function BorrowerForm({ onSubmit }: BorrowerFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4 max-w-md border bg-gray-700 p-5 rounded-3xl text-white/70">
+    <form
+      onSubmit={handleSubmit}
+      className="grid gap-4 border bg-gray-700 p-5 rounded-3xl text-white/70"
+    >
       <div>
         <label className="block text-sm font-medium">Monthly Income</label>
         <input

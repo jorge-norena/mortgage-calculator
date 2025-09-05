@@ -1,13 +1,18 @@
 // --- Domain Types for the Underwriting Challenge ---
 
-export type OccupancyType = 'Residencial' | 'Business' | 'Educational' | 'Industrial' | 'Other';
+export type OccupancyType =
+  | "Residencial"
+  | "Business"
+  | "Educational"
+  | "Industrial"
+  | "Other";
 
 export interface BorrowerInput {
-  monthlyIncome: number;   // > 0
-  monthlyDebts: number;    // >= 0
-  loanAmount: number;      // > 0
-  propertyValue: number;   // > 0
-  fico: number;            // 300..850
+  monthlyIncome: number; // > 0
+  monthlyDebts: number; // >= 0
+  loanAmount: number; // > 0
+  propertyValue: number; // > 0
+  fico: number; // 300..850
   occupancy: OccupancyType;
 }
 
@@ -18,7 +23,7 @@ export interface Calculations {
   ltv: number;
 }
 
-export type Decision = 'Approve' | 'Refer' | 'Decline';
+export type Decision = "Approve" | "Refer" | "Decline";
 
 export interface EvaluationResult extends Calculations {
   decision: Decision;

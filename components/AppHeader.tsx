@@ -1,4 +1,3 @@
-// components/AppHeader.tsx
 'use client';
 import Image from 'next/image';
 
@@ -7,7 +6,7 @@ export default function AppHeader() {
     <div>
     <header className="header flex items-center gap-3">
       <Image
-        src="/af-web-small-b.png"  // coloca aquí tu archivo real
+        src="/af-web-small-b.png"
         alt="AgilityFeat / WebRTC.ventures"
         width={250}
         height={40}
