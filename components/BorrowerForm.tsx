@@ -33,7 +33,7 @@ export default function BorrowerForm({ onSubmit }: BorrowerFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4 max-w-md border">
+    <form onSubmit={handleSubmit} className="grid gap-4 max-w-md border bg-gray-700 p-5 rounded-3xl text-white/70">
       <div>
         <label className="block text-sm font-medium">Monthly Income</label>
         <input

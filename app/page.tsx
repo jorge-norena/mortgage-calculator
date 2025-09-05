@@ -1,7 +1,10 @@
+// app/page.tsx
 'use client';
 
 import { useState } from 'react';
+import AppHeader from '@/components/AppHeader';
 import BorrowerForm from '@/components/BorrowerForm';
+import HelpPanel from '@/components/HelpPanel';
 import { BorrowerInput, EvaluationResult, EvaluateResponse } from '@/lib/types';
 
 export default function HomePage() {
@@ -13,22 +16,19 @@ export default function HomePage() {
     setLoading(true);
     setErrorMsg(null);
     setResult(null);
-
     try {
       const res = await fetch('/api/evaluate', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(data),
       });
-
       const payload: EvaluateResponse = await res.json();
-
       if (!res.ok || 'error' in payload) {
         setErrorMsg((payload as any).error ?? 'Unable to evaluate');
       } else {
         setResult(payload as EvaluationResult);
       }
-    } catch (e) {
+    } catch {
       setErrorMsg('Network or server error');
     } finally {
       setLoading(false);
@@ -36,34 +36,44 @@ export default function HomePage() {
   };
 
   return (
-    <main className="p-6 max-w-3xl mx-auto grid gap-6 border">
-      <h1 className="text-2xl font-bold">Mortgage Underwriting</h1>
+    <main className="min-h-screen grid place-items-center px-4 border">
 
-      <BorrowerForm onSubmit={handleFormSubmit} />
+      <div className="w-full max-w-5xl border p-3 bg-gray-800 rounded-3xl shadow-4xl">
 
-      {loading && <div className="text-sm opacity-80">Evaluating...</div>}
-      {errorMsg && (
-        <div className="p-3 border border-red-300 text-red-700 rounded">
-          {errorMsg}
+        <AppHeader />
+
+
+        <div className="grid gap-6 md:grid-cols-2 pt-5">
+          <section className="card">
+            <BorrowerForm onSubmit={handleFormSubmit} />
+
+            {loading && <p className="text-sm mt-3 opacity-80">Evaluating…</p>}
+            {errorMsg && (
+              <p className="text-sm mt-3 text-red-700 border border-red-200 bg-red-50 rounded p-2">
+                {errorMsg}
+              </p>
+            )}
+            {/* TODO: Show results IN MODAL */}
+            {result && (
+              <div className="mt-4 rounded-xl border border-black/10 bg-white p-3">
+                <h3 className="font-semibold mb-2">Resultado</h3>
+                <div className="text-sm space-y-1">
+                  <div><strong>Decision:</strong> {result.decision}</div>
+                  <div><strong>DTI:</strong> {result.dti.toFixed(2)}</div>
+                  <div><strong>LTV:</strong> {result.ltv.toFixed(2)}</div>
+                  {result.reasons.length > 0 && (
+                    <ul className="list-disc ml-5">
+                      {result.reasons.map((r, i) => <li key={i}>{r}</li>)}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            )}
+          </section>
+
+          <HelpPanel />
         </div>
-      )}
-
-      {result && (
-        <div className="p-4 border rounded-lg">
-          <h2 className="font-semibold mb-2">Evaluation Result</h2>
-          <p><strong>Decision:</strong> {result.decision}</p>
-          <p><strong>DTI:</strong> {result.dti.toFixed(2)}</p>
-          <p><strong>LTV:</strong> {result.ltv.toFixed(2)}</p>
-          {result.reasons.length > 0 && (
-            <ul className="list-disc ml-5">
-              {result.reasons.map((r, i) => <li key={i}>{r}</li>)}
-            </ul>
-          )}
-          <div className="text-xs opacity-70 mt-2">
-            Evaluated at {new Date(result.timestamp).toLocaleString()}
-          </div>
-        </div>
-      )}
+      </div>
     </main>
   );
 }
