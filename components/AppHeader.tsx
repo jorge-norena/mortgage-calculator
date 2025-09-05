@@ -12,7 +12,7 @@ export default function AppHeader() {
         height={40}
         priority
       />
-      <div className="flex-1 text-white text-2xl text-center font-black opacity-60">
+      <div className="flex-1 text-white text-2xl text-center font-black opacity-60 hidden md:block">
         dba WebRTC.ventures Coding Challenge
       </div>
       
