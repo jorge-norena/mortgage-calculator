@@ -1,6 +1,6 @@
 // --- Domain Types for the Underwriting Challenge ---
 
-export type OccupancyType = 'Primary' | 'Secondary' | 'Investment';
+export type OccupancyType = 'Residencial' | 'Business' | 'Educational' | 'Industrial' | 'Other';
 
 export interface BorrowerInput {
   monthlyIncome: number;   // > 0

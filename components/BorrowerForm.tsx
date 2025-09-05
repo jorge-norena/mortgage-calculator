@@ -14,10 +14,9 @@ export default function BorrowerForm({ onSubmit }: BorrowerFormProps) {
     loanAmount: 0,
     propertyValue: 0,
     fico: 680,
-    occupancy: 'Primary',
+    occupancy: 'Residencial',
   });
 
-  // helper para actualizar estado
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -100,9 +99,11 @@ export default function BorrowerForm({ onSubmit }: BorrowerFormProps) {
           onChange={handleChange}
           className="w-full border rounded px-3 py-2"
         >
-          <option value="Primary">Primary</option>
-          <option value="Secondary">Secondary</option>
-          <option value="Investment">Investment</option>
+          <option value="Residencial">Residencial</option>
+          <option value="Business">Business</option>
+          <option value="Educational">Educational</option>
+          <option value="Industrial">Industrial</option>
+          <option value="Other">Other</option>
         </select>
       </div>
 
