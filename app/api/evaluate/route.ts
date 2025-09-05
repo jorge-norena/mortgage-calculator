@@ -40,7 +40,7 @@ function evaluate(input: BorrowerInput) {
 
 export async function GET() {
   return NextResponse.json(
-    { error: 'Evaluate route !!' },
+    { error: 'Evaluate route working!!' },
     { status: 405 }
   );
 }

@@ -36,7 +36,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="p-6 max-w-3xl mx-auto grid gap-6">
+    <main className="p-6 max-w-3xl mx-auto grid gap-6 border">
       <h1 className="text-2xl font-bold">Mortgage Underwriting</h1>
 
       <BorrowerForm onSubmit={handleFormSubmit} />
@@ -49,7 +49,7 @@ export default function HomePage() {
       )}
 
       {result && (
-        <div className="p-4 border rounded-lg bg-gray-50">
+        <div className="p-4 border rounded-lg">
           <h2 className="font-semibold mb-2">Evaluation Result</h2>
           <p><strong>Decision:</strong> {result.decision}</p>
           <p><strong>DTI:</strong> {result.dti.toFixed(2)}</p>
