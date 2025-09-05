@@ -65,8 +65,8 @@ export default function BorrowerForm({ onSubmit }: BorrowerFormProps) {
   const label = "block text-sm font-medium";
   const help = "text-xs text-red-400 mt-1";
 
-  const err = (k: keyof BorrowerInput) =>
-    errors[k] ? <p className={help}>{errors[k]}</p> : null;
+  // const err = (k: keyof BorrowerInput) =>
+  //   errors[k] ? <p className={help}>{errors[k]}</p> : null;
 
   return (
     <form

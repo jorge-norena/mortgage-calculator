@@ -13,7 +13,7 @@ export default function HelpPanel() {
         <li><strong>FICO</strong>: Credit Score (Fair Isaac Corporation) (300–850)</li>
       </ul>
       <p className="text-sm mt-3">
-        <strong>Note:</strong> last 5 evaluations are stored in your browser's local storage for
+        <strong>Note:</strong> last 5 evaluations are stored in your browser local storage for
         your convenience.
       </p>
       <hr className="my-4" />

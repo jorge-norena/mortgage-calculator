@@ -24,26 +24,41 @@ export default function HomePage() {
     console.log("Loaded history", loadHistory());
   }, []);
 
-  const handleFormSubmit = async (data: BorrowerInput) => {
+  const handleFormSubmit = async (data: BorrowerInput): Promise<void> => {
     setLoading(true);
     setErrorMsg(null);
     setResult(null);
+
     try {
       const res = await fetch("/api/evaluate", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(data),
       });
-      const payload: EvaluateResponse = await res.json();
-      if (!res.ok || "error" in payload) {
-        setErrorMsg((payload as any).error ?? "Unable to evaluate");
-      } else {
-        const r = payload as EvaluationResult;
-        setResult(r);
-        setOpen(true);
-        saveToHistory(r);
-        setHistory((prev) => [r, ...prev]); // Update en UI
+
+      const payload = (await res.json()) as EvaluateResponse;
+
+      if (!res.ok) {
+        if (typeof payload === "object" && payload && "error" in payload) {
+          setErrorMsg(payload.error);
+        } else {
+          setErrorMsg("Unable to evaluate");
+        }
+        return;
       }
+
+      if ("error" in payload) {
+        setErrorMsg(payload.error);
+        return;
+      }
+
+      const r = payload;
+      setResult(r);
+      setOpen(true);
+
+      // Save to history and update UI
+      saveToHistory(r);
+      setHistory((prev) => [r, ...prev]);
     } catch {
       setErrorMsg("Network or server error");
     } finally {
@@ -54,7 +69,7 @@ export default function HomePage() {
   const handleClearHistory = () => {
     // Confirm before clearing Basic.
     if (!history.length) return;
-    const ok = window.confirm('Clear all saved evaluations?');
+    const ok = window.confirm("Clear all saved evaluations?");
     if (!ok) return;
     clearHistory();
     setHistory([]);
@@ -69,7 +84,7 @@ export default function HomePage() {
         <div className="grid gap-6 md:grid-cols-2 pt-5">
           <section className="card">
             <BorrowerForm onSubmit={handleFormSubmit} />
-            <Credits/>
+            <Credits />
             {loading && <p className="text-sm mt-3 opacity-80">Evaluating…</p>}
             {errorMsg && (
               <p className="text-sm mt-3 text-red-700 border border-red-200 bg-red-50 rounded p-2">
