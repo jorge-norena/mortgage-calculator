@@ -1,43 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { BorrowerInput, EvaluateRequest, EvaluateResponse } from "@/lib/types";
-import { calculateDTI, calculateLTV } from "@/lib/calculation";
-import { DEFAULT_THRESHOLDS } from "@/lib/thresholds";
+import { EvaluateRequest, EvaluateResponse } from "@/lib/types";
+import { evaluate } from "@/lib/rules";
 
-// Evaluates borrower input against thresholds to return decision and calculations
-function evaluate(input: BorrowerInput) {
-  const dti = calculateDTI(input.monthlyDebts, input.monthlyIncome);
-  const ltv = calculateLTV(input.loanAmount, input.propertyValue);
-  const reasons: string[] = [];
-
-  let decision: "Approve" | "Refer" | "Decline";
-  if (
-    dti <= DEFAULT_THRESHOLDS.approve.maxDTI &&
-    ltv <= DEFAULT_THRESHOLDS.approve.maxLTV &&
-    input.fico >= DEFAULT_THRESHOLDS.approve.minFICO
-  ) {
-    decision = "Approve";
-  } else if (
-    dti <= DEFAULT_THRESHOLDS.refer.maxDTI &&
-    ltv <= DEFAULT_THRESHOLDS.refer.maxLTV &&
-    input.fico >= DEFAULT_THRESHOLDS.refer.minFICO
-  ) {
-    decision = "Refer";
-    reasons.push("Needs manual review");
-  } else {
-    decision = "Decline";
-    reasons.push("Failed thresholds");
-  }
-
-  return {
-    decision,
-    dti,
-    ltv,
-    reasons,
-    timestamp: new Date().toISOString(),
-    input,
-  };
-}
-
+// Disallow GET
 export async function GET() {
   return NextResponse.json(
     { error: "Evaluate route working!!" },
